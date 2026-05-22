@@ -23,6 +23,7 @@ flutter:
   uses-material-design: true
 
   assets:
+    - assets/images/beattreat.png
     #  Imágenes de portadas 
     - assets/images/queen_night_opera.png
     - assets/images/queen_news_world.png
@@ -61,3 +62,36 @@ flutter:
     - assets/audio/dirt_aic/untitled.mp3
     - assets/audio/dirt_aic/would.mp3
     - assets/audio/dirt_aic/rain_when_i_die.mp3
+
+    - assets/audio/facelift_aic/we_die_young.mp3
+    - assets/audio/facelift_aic/man_in_the_box.mp3
+    - assets/audio/facelift_aic/sea_of_sorrow.mp3
+    - assets/audio/facelift_aic/bleed_the_freak.mp3
+    - assets/audio/facelift_aic/i_cant_remember.mp3
+    - assets/audio/facelift_aic/love_hate_love.mp3
+    - assets/audio/facelift_aic/it_aint_like_that.mp3
+    - assets/audio/facelift_aic/sunshine.mp3
+    - assets/audio/facelift_aic/put_you_down.mp3
+    - assets/audio/facelift_aic/confusion.mp3
+    - assets/audio/facelift_aic/i_know_somethin_bout_you.mp3
+    - assets/audio/facelift_aic/real_thing.mp3
+
+    - assets/audio/jar_of_flies_aic/rotten_apple.mp3
+    - assets/audio/jar_of_flies_aic/nutshell.mp3
+    - assets/audio/jar_of_flies_aic/i_stay_away.mp3
+    - assets/audio/jar_of_flies_aic/no_excuses.mp3
+    - assets/audio/jar_of_flies_aic/whale_wasp.mp3
+    - assets/audio/jar_of_flies_aic/dont_follow.mp3
+    - assets/audio/jar_of_flies_aic/swing_on_this.mp3
+
+    - assets/audio/news_of_the_world_queen/we_will_rock_you.mp3
+    - assets/audio/news_of_the_world_queen/we_are_the_champions.mp3
+    - assets/audio/news_of_the_world_queen/sheer_heart_attack.mp3
+    - assets/audio/news_of_the_world_queen/all_dead_all_dead.mp3
+    - assets/audio/news_of_the_world_queen/spread_your_wings.mp3
+    - assets/audio/news_of_the_world_queen/fight_from_the_inside.mp3
+    - assets/audio/news_of_the_world_queen/get_down_make_love.mp3
+    - assets/audio/news_of_the_world_queen/sleeping_on_the_sidewalk.mp3
+    - assets/audio/news_of_the_world_queen/who_needs_you.mp3
+    - assets/audio/news_of_the_world_queen/its_late.mp3
+    - assets/audio/news_of_the_world_queen/my_melancholy_blues.mp3

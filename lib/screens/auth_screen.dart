@@ -15,13 +15,11 @@ class _AuthScreenState extends State<AuthScreen> with SingleTickerProviderStateM
   late TabController _tabController;
   int _selectedTab = 0;
 
-  // Login controllers
   final _emailLoginCtrl = TextEditingController();
   final _passLoginCtrl  = TextEditingController();
   String? _loginError;
   bool _rememberMe = false;
 
-  // Registro controllers
   final _nombreCtrl   = TextEditingController();
   final _usernameCtrl = TextEditingController();
   final _emailRegCtrl = TextEditingController();
@@ -80,7 +78,6 @@ class _AuthScreenState extends State<AuthScreen> with SingleTickerProviderStateM
               _Logo(),
               const SizedBox(height: 36),
 
-              //  Tabs 
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -95,7 +92,6 @@ class _AuthScreenState extends State<AuthScreen> with SingleTickerProviderStateM
               ),
               const SizedBox(height: 32),
 
-              // Tab content
               SizedBox(
                 height: _selectedTab == 0 ? 340 : 480,
                 child: TabBarView(
@@ -121,7 +117,6 @@ class _AuthScreenState extends State<AuthScreen> with SingleTickerProviderStateM
         DarkTextField(hint: 'Contrasena', icon: Icons.lock_outline, obscure: true, controller: _passLoginCtrl),
         const SizedBox(height: 14),
 
-        // Recuerdame
         Row(
           children: [
             Checkbox(
@@ -190,7 +185,6 @@ class _AuthScreenState extends State<AuthScreen> with SingleTickerProviderStateM
         PurpleButton(label: 'Regístrate', onTap: _registrar),
         const SizedBox(height: 12),
 
-        // Google button
         GestureDetector(
           child: Container(
             width: double.infinity,
@@ -215,23 +209,34 @@ class _AuthScreenState extends State<AuthScreen> with SingleTickerProviderStateM
   }
 }
 
-//  Logo 
+// ── Logo: imagen beattreat.png + texto ──────────────────────────
 class _Logo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Container(
-          width: 56, height: 56,
-          decoration: BoxDecoration(
-            gradient: const LinearGradient(
-              colors: [BeatTreatColors.purple60, BeatTreatColors.purpleDark],
-              begin: Alignment.topLeft, end: Alignment.bottomRight,
+        ClipRRect(
+          borderRadius: BorderRadius.circular(14),
+          child: Image.asset(
+            'images/beattreat.png',
+            width: 56,
+            height: 56,
+            fit: BoxFit.cover,
+            errorBuilder: (_, __, ___) => Container(
+              width: 56,
+              height: 56,
+              decoration: BoxDecoration(
+                gradient: const LinearGradient(
+                  colors: [BeatTreatColors.purple60, BeatTreatColors.purpleDark],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                borderRadius: BorderRadius.circular(14),
+              ),
+              child: const Icon(Icons.music_note, color: Colors.white, size: 30),
             ),
-            borderRadius: BorderRadius.circular(14),
           ),
-          child: const Icon(Icons.music_note, color: Colors.white, size: 30),
         ),
         const SizedBox(width: 14),
         Text('BeatTreat',
@@ -241,7 +246,6 @@ class _Logo extends StatelessWidget {
   }
 }
 
-//  Tab button 
 class _TabButton extends StatelessWidget {
   final String texto;
   final bool selected;

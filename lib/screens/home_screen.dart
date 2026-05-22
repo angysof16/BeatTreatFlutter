@@ -47,7 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-//  Top Bar 
+// ── Top Bar ────────────────────────────────────────────────────
 class _TopBarHome extends StatelessWidget {
   final VoidCallback onSearchTap;
   final VoidCallback onProfileTap;
@@ -63,18 +63,34 @@ class _TopBarHome extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           child: Row(
             children: [
-              Container(
-                width: 38, height: 38,
-                decoration: BoxDecoration(
-                  gradient: const LinearGradient(colors: [BeatTreatColors.purple60, BeatTreatColors.purpleDark]),
-                  borderRadius: BorderRadius.circular(10),
+              // Logo imagen
+              ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: Image.asset(
+                  'images/beattreat.png',
+                  width: 38,
+                  height: 38,
+                  fit: BoxFit.cover,
+                  errorBuilder: (_, __, ___) => Container(
+                    width: 38,
+                    height: 38,
+                    decoration: BoxDecoration(
+                      gradient: const LinearGradient(
+                          colors: [BeatTreatColors.purple60, BeatTreatColors.purpleDark]),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: const Icon(Icons.music_note, color: Colors.white, size: 20),
+                  ),
                 ),
-                child: const Icon(Icons.music_note, color: Colors.white, size: 20),
               ),
               const SizedBox(width: 10),
-              Text('BeatTreat', style: GoogleFonts.outfit(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white)),
+              Text('BeatTreat',
+                  style: GoogleFonts.outfit(
+                      fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white)),
               const Spacer(),
-              IconButton(icon: const Icon(Icons.search, color: Colors.white), onPressed: onSearchTap),
+              IconButton(
+                  icon: const Icon(Icons.search, color: Colors.white),
+                  onPressed: onSearchTap),
               GestureDetector(
                 onTap: onProfileTap,
                 child: const CircleAvatar(
@@ -92,7 +108,7 @@ class _TopBarHome extends StatelessWidget {
   }
 }
 
-//  Home Body 
+// ── Home Body ──────────────────────────────────────────────────
 class _HomeBody extends StatelessWidget {
   final void Function(AlbumData) onAlbumTap;
   const _HomeBody({required this.onAlbumTap});
@@ -102,21 +118,18 @@ class _HomeBody extends StatelessWidget {
     return ListView(
       padding: const EdgeInsets.only(bottom: 100),
       children: [
-        //  Banner 
         _Banner(),
         const SizedBox(height: 24),
-
-        //  Secciones por artista 
         ...artistasQuemados.map((artista) => _ArtistaSection(
-          artista: artista,
-          onAlbumTap: onAlbumTap,
-        )),
+              artista: artista,
+              onAlbumTap: onAlbumTap,
+            )),
       ],
     );
   }
 }
 
-//  Banner 
+// ── Banner ─────────────────────────────────────────────────────
 class _Banner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -127,37 +140,55 @@ class _Banner extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
         gradient: const LinearGradient(
           colors: [Color(0xFF1A1230), BeatTreatColors.purple60],
-          begin: Alignment.topLeft, end: Alignment.bottomRight,
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
         ),
       ),
       child: Stack(
         children: [
-          // Nota musical decorativa
-          Positioned(right: 16, bottom: 10,
-            child: Icon(Icons.music_note, color: Colors.white.withOpacity(0.1), size: 100)),
+          Positioned(
+              right: 16,
+              bottom: 10,
+              child: Icon(Icons.music_note,
+                  color: Colors.white.withOpacity(0.1), size: 100)),
           Padding(
             padding: const EdgeInsets.all(20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('Tu mejor ritmo', style: GoogleFonts.outfit(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white)),
-                Text('todos los días', style: GoogleFonts.outfit(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white)),
+                Text('Tu mejor ritmo',
+                    style: GoogleFonts.outfit(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white)),
+                Text('todos los días',
+                    style: GoogleFonts.outfit(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white)),
                 const SizedBox(height: 8),
-                Text('Descubre, resena y comparte música', style: GoogleFonts.spaceGrotesk(fontSize: 13, color: Colors.white70)),
+                Text('Descubre, resena y comparte música',
+                    style: GoogleFonts.spaceGrotesk(
+                        fontSize: 13, color: Colors.white70)),
               ],
             ),
           ),
-          // Dots indicadores
-          Positioned(bottom: 12, right: 16,
-            child: Row(children: List.generate(3, (i) => Container(
-              margin: const EdgeInsets.symmetric(horizontal: 2),
-              width: 6, height: 6,
-              decoration: BoxDecoration(
-                color: i == 0 ? Colors.white : Colors.white38,
-                shape: BoxShape.circle,
-              ),
-            ))),
+          Positioned(
+            bottom: 12,
+            right: 16,
+            child: Row(
+                children: List.generate(
+                    3,
+                    (i) => Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 2),
+                          width: 6,
+                          height: 6,
+                          decoration: BoxDecoration(
+                            color: i == 0 ? Colors.white : Colors.white38,
+                            shape: BoxShape.circle,
+                          ),
+                        ))),
           ),
         ],
       ),
@@ -165,7 +196,7 @@ class _Banner extends StatelessWidget {
   }
 }
 
-//  Sección de artista 
+// ── Sección de artista ─────────────────────────────────────────
 class _ArtistaSection extends StatelessWidget {
   final ArtistaData artista;
   final void Function(AlbumData) onAlbumTap;
@@ -182,7 +213,11 @@ class _ArtistaSection extends StatelessWidget {
             children: [
               const Icon(Icons.account_circle, color: Colors.white, size: 24),
               const SizedBox(width: 8),
-              Text(artista.nombre, style: GoogleFonts.spaceGrotesk(fontSize: 18, fontWeight: FontWeight.w600, color: Colors.white)),
+              Text(artista.nombre,
+                  style: GoogleFonts.spaceGrotesk(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white)),
               const Spacer(),
               const Icon(Icons.arrow_forward, color: Colors.white54, size: 18),
             ],
@@ -194,7 +229,9 @@ class _ArtistaSection extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               itemCount: artista.albumes.length,
               separatorBuilder: (_, __) => const SizedBox(width: 16),
-              itemBuilder: (_, i) => _AlbumItem(album: artista.albumes[i], onTap: () => onAlbumTap(artista.albumes[i])),
+              itemBuilder: (_, i) => _AlbumItem(
+                  album: artista.albumes[i],
+                  onTap: () => onAlbumTap(artista.albumes[i])),
             ),
           ),
           const SizedBox(height: 24),
@@ -204,7 +241,7 @@ class _ArtistaSection extends StatelessWidget {
   }
 }
 
-//  Item álbum 
+// ── Item álbum ─────────────────────────────────────────────────
 class _AlbumItem extends StatelessWidget {
   final AlbumData album;
   final VoidCallback onTap;
@@ -223,14 +260,18 @@ class _AlbumItem extends StatelessWidget {
               borderRadius: BorderRadius.circular(8),
               child: CachedNetworkImage(
                 imageUrl: album.imagenUrl,
-                width: 100, height: 100, fit: BoxFit.cover,
+                width: 100,
+                height: 100,
+                fit: BoxFit.cover,
                 placeholder: (_, __) => Container(
-                  width: 100, height: 100,
+                  width: 100,
+                  height: 100,
                   color: BeatTreatColors.surfaceVariant,
                   child: const Icon(Icons.music_note, color: Colors.white30, size: 32),
                 ),
                 errorWidget: (_, __, ___) => Container(
-                  width: 100, height: 100,
+                  width: 100,
+                  height: 100,
                   color: BeatTreatColors.surfaceVariant,
                   child: const Icon(Icons.music_note, color: Colors.white30, size: 32),
                 ),
@@ -238,8 +279,9 @@ class _AlbumItem extends StatelessWidget {
             ),
             const SizedBox(height: 6),
             Text(album.nombre,
-              style: GoogleFonts.spaceGrotesk(color: Colors.white, fontSize: 12),
-              maxLines: 2, overflow: TextOverflow.ellipsis),
+                style: GoogleFonts.spaceGrotesk(color: Colors.white, fontSize: 12),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis),
           ],
         ),
       ),

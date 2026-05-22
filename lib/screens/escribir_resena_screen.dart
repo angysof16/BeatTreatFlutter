@@ -32,7 +32,9 @@ class _EscribirResenaScreenState extends State<EscribirResenaScreen> {
   }
 
   bool get _puedePublicar =>
-      _albumSeleccionado != null && _calificacion > 0 && _textoCtrl.text.trim().isNotEmpty;
+      _albumSeleccionado != null &&
+      _calificacion > 0 &&
+      _textoCtrl.text.trim().isNotEmpty;
 
   void _publicar() {
     if (!_puedePublicar) return;
@@ -58,16 +60,30 @@ class _EscribirResenaScreenState extends State<EscribirResenaScreen> {
         ),
         title: Row(
           children: [
-            Container(
-              width: 32, height: 32,
-              decoration: BoxDecoration(
-                gradient: const LinearGradient(colors: [BeatTreatColors.purple60, BeatTreatColors.purpleDark]),
-                borderRadius: BorderRadius.circular(8),
+            // Logo imagen
+            ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: Image.asset(
+                'images/beattreat.png',
+                width: 32,
+                height: 32,
+                fit: BoxFit.cover,
+                errorBuilder: (_, __, ___) => Container(
+                  width: 32,
+                  height: 32,
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(
+                        colors: [BeatTreatColors.purple60, BeatTreatColors.purpleDark]),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: const Icon(Icons.music_note, color: Colors.white, size: 18),
+                ),
               ),
-              child: const Icon(Icons.music_note, color: Colors.white, size: 18),
             ),
             const SizedBox(width: 8),
-            Text('BeatTreat', style: GoogleFonts.outfit(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white)),
+            Text('BeatTreat',
+                style: GoogleFonts.outfit(
+                    fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white)),
           ],
         ),
         actions: [
@@ -82,10 +98,11 @@ class _EscribirResenaScreenState extends State<EscribirResenaScreen> {
               ),
               alignment: Alignment.center,
               child: Text('Publicar',
-                style: GoogleFonts.spaceGrotesk(
-                  fontSize: 14, fontWeight: FontWeight.bold,
-                  color: _puedePublicar ? BeatTreatColors.purple60 : Colors.white38,
-                )),
+                  style: GoogleFonts.spaceGrotesk(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    color: _puedePublicar ? BeatTreatColors.purple60 : Colors.white38,
+                  )),
             ),
           ),
         ],
@@ -97,31 +114,36 @@ class _EscribirResenaScreenState extends State<EscribirResenaScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 8),
-            Text('Nueva resena', style: GoogleFonts.outfit(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.white)),
+            Text('Nueva resena',
+                style: GoogleFonts.outfit(
+                    fontSize: 28, fontWeight: FontWeight.bold, color: Colors.white)),
             Text('Comparte tu opinión con la comunidad',
-              style: GoogleFonts.spaceGrotesk(fontSize: 14, color: Colors.white38)),
+                style: GoogleFonts.spaceGrotesk(fontSize: 14, color: Colors.white38)),
             const SizedBox(height: 24),
 
-            //  Selector de álbum 
-            Text('Álbum', style: GoogleFonts.spaceGrotesk(fontSize: 13, fontWeight: FontWeight.w600, color: Colors.white)),
+            Text('Álbum',
+                style: GoogleFonts.spaceGrotesk(
+                    fontSize: 13, fontWeight: FontWeight.w600, color: Colors.white)),
             const SizedBox(height: 8),
             _buildSelectorAlbum(),
             const SizedBox(height: 24),
 
-            //  Calificación 
-            Text('Calificación', style: GoogleFonts.spaceGrotesk(fontSize: 13, fontWeight: FontWeight.w600, color: Colors.white)),
+            Text('Calificación',
+                style: GoogleFonts.spaceGrotesk(
+                    fontSize: 13, fontWeight: FontWeight.w600, color: Colors.white)),
             const SizedBox(height: 8),
             _buildCalificacion(),
             const SizedBox(height: 24),
 
-            //  Texto 
-            Text('Tu opinión', style: GoogleFonts.spaceGrotesk(fontSize: 13, fontWeight: FontWeight.w600, color: Colors.white)),
+            Text('Tu opinión',
+                style: GoogleFonts.spaceGrotesk(
+                    fontSize: 13, fontWeight: FontWeight.w600, color: Colors.white)),
             const SizedBox(height: 8),
             _buildCampoTexto(),
             const SizedBox(height: 32),
 
-            //  Botón publicar 
-            PurpleButton(label: 'Publicar resena', onTap: _publicar, enabled: _puedePublicar),
+            PurpleButton(
+                label: 'Publicar resena', onTap: _publicar, enabled: _puedePublicar),
             const SizedBox(height: 80),
           ],
         ),
@@ -131,7 +153,6 @@ class _EscribirResenaScreenState extends State<EscribirResenaScreen> {
 
   Widget _buildSelectorAlbum() {
     if (widget.albumPreseleccionado != null) {
-      // Álbum fijo — no editable
       return Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
@@ -141,9 +162,11 @@ class _EscribirResenaScreenState extends State<EscribirResenaScreen> {
         child: Row(
           children: [
             Container(
-              width: 46, height: 46,
+              width: 46,
+              height: 46,
               decoration: BoxDecoration(
-                gradient: const LinearGradient(colors: [BeatTreatColors.purple60, BeatTreatColors.purpleDark]),
+                gradient: const LinearGradient(
+                    colors: [BeatTreatColors.purple60, BeatTreatColors.purpleDark]),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: const Icon(Icons.album, color: Colors.white, size: 24),
@@ -154,9 +177,13 @@ class _EscribirResenaScreenState extends State<EscribirResenaScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(_albumSeleccionado!.nombre,
-                    style: GoogleFonts.spaceGrotesk(fontSize: 15, fontWeight: FontWeight.w600, color: Colors.white)),
+                      style: GoogleFonts.spaceGrotesk(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white)),
                   Text('Álbum seleccionado',
-                    style: GoogleFonts.spaceGrotesk(fontSize: 12, color: Colors.white38)),
+                      style: GoogleFonts.spaceGrotesk(
+                          fontSize: 12, color: Colors.white38)),
                 ],
               ),
             ),
@@ -166,11 +193,13 @@ class _EscribirResenaScreenState extends State<EscribirResenaScreen> {
       );
     }
 
-    // Selector desplegable
     final albumsFiltrados = _busqueda.isEmpty
         ? albumsQuemados
-        : albumsQuemados.where((a) =>
-            '${a.nombre} — ${a.artista}'.toLowerCase().contains(_busqueda.toLowerCase())).toList();
+        : albumsQuemados
+            .where((a) => '${a.nombre} — ${a.artista}'
+                .toLowerCase()
+                .contains(_busqueda.toLowerCase()))
+            .toList();
 
     return Column(
       children: [
@@ -185,9 +214,11 @@ class _EscribirResenaScreenState extends State<EscribirResenaScreen> {
             child: Row(
               children: [
                 Container(
-                  width: 46, height: 46,
+                  width: 46,
+                  height: 46,
                   decoration: BoxDecoration(
-                    gradient: const LinearGradient(colors: [BeatTreatColors.purple60, BeatTreatColors.purpleDark]),
+                    gradient: const LinearGradient(
+                        colors: [BeatTreatColors.purple60, BeatTreatColors.purpleDark]),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: const Icon(Icons.album, color: Colors.white, size: 24),
@@ -196,19 +227,27 @@ class _EscribirResenaScreenState extends State<EscribirResenaScreen> {
                 Expanded(
                   child: _albumSeleccionado == null
                       ? Text('Seleccionar álbum',
-                          style: GoogleFonts.spaceGrotesk(fontSize: 15, color: Colors.white38))
+                          style: GoogleFonts.spaceGrotesk(
+                              fontSize: 15, color: Colors.white38))
                       : Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(_albumSeleccionado!.nombre,
-                              style: GoogleFonts.spaceGrotesk(fontSize: 15, fontWeight: FontWeight.w600, color: Colors.white)),
+                                style: GoogleFonts.spaceGrotesk(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.white)),
                             Text(_albumSeleccionado!.artista,
-                              style: GoogleFonts.spaceGrotesk(fontSize: 12, color: Colors.white38)),
+                                style: GoogleFonts.spaceGrotesk(
+                                    fontSize: 12, color: Colors.white38)),
                           ],
                         ),
                 ),
-                Icon(_expandirSelector ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
-                  color: Colors.white38),
+                Icon(
+                    _expandirSelector
+                        ? Icons.keyboard_arrow_up
+                        : Icons.keyboard_arrow_down,
+                    color: Colors.white38),
               ],
             ),
           ),
@@ -217,11 +256,12 @@ class _EscribirResenaScreenState extends State<EscribirResenaScreen> {
           Container(
             decoration: const BoxDecoration(
               color: BeatTreatColors.surfaceVariant,
-              borderRadius: BorderRadius.only(bottomLeft: Radius.circular(14), bottomRight: Radius.circular(14)),
+              borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(14),
+                  bottomRight: Radius.circular(14)),
             ),
             child: Column(
               children: [
-                // Campo de búsqueda
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                   child: TextField(
@@ -229,8 +269,10 @@ class _EscribirResenaScreenState extends State<EscribirResenaScreen> {
                     style: GoogleFonts.spaceGrotesk(color: Colors.white),
                     decoration: InputDecoration(
                       hintText: 'Buscar...',
-                      hintStyle: GoogleFonts.spaceGrotesk(color: Colors.white38, fontSize: 14),
-                      prefixIcon: const Icon(Icons.search, color: Colors.white38, size: 18),
+                      hintStyle: GoogleFonts.spaceGrotesk(
+                          color: Colors.white38, fontSize: 14),
+                      prefixIcon:
+                          const Icon(Icons.search, color: Colors.white38, size: 18),
                       border: InputBorder.none,
                     ),
                   ),
@@ -241,7 +283,8 @@ class _EscribirResenaScreenState extends State<EscribirResenaScreen> {
                   child: ListView.separated(
                     shrinkWrap: true,
                     itemCount: albumsFiltrados.length,
-                    separatorBuilder: (_, __) => const Divider(color: Colors.white10, height: 1),
+                    separatorBuilder: (_, __) =>
+                        const Divider(color: Colors.white10, height: 1),
                     itemBuilder: (_, i) {
                       final album = albumsFiltrados[i];
                       return GestureDetector(
@@ -251,14 +294,20 @@ class _EscribirResenaScreenState extends State<EscribirResenaScreen> {
                           _busqueda = '';
                         }),
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 12),
                           child: Row(
                             children: [
-                              Container(width: 8, height: 8, decoration: BoxDecoration(
-                                color: BeatTreatColors.purple60, borderRadius: BorderRadius.circular(4))),
+                              Container(
+                                  width: 8,
+                                  height: 8,
+                                  decoration: BoxDecoration(
+                                      color: BeatTreatColors.purple60,
+                                      borderRadius: BorderRadius.circular(4))),
                               const SizedBox(width: 12),
                               Text('${album.nombre} — ${album.artista}',
-                                style: GoogleFonts.spaceGrotesk(color: Colors.white, fontSize: 14)),
+                                  style: GoogleFonts.spaceGrotesk(
+                                      color: Colors.white, fontSize: 14)),
                             ],
                           ),
                         ),
@@ -306,11 +355,15 @@ class _EscribirResenaScreenState extends State<EscribirResenaScreen> {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
               decoration: BoxDecoration(
-                gradient: const LinearGradient(colors: [BeatTreatColors.purple60, Color(0xFF8B5CF6)]),
+                gradient: const LinearGradient(
+                    colors: [BeatTreatColors.purple60, Color(0xFF8B5CF6)]),
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Text(etiquetas[_calificacion],
-                style: GoogleFonts.spaceGrotesk(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w600)),
+                  style: GoogleFonts.spaceGrotesk(
+                      color: Colors.white,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600)),
             ),
           ],
         ],
@@ -334,15 +387,18 @@ class _EscribirResenaScreenState extends State<EscribirResenaScreen> {
             maxLength: 500,
             style: GoogleFonts.spaceGrotesk(color: Colors.white),
             decoration: InputDecoration(
-              hintText: '¿Qué te pareció este álbum? Cuéntale a la comunidad...',
-              hintStyle: GoogleFonts.spaceGrotesk(color: Colors.white24, fontSize: 14),
+              hintText:
+                  '¿Qué te pareció este álbum? Cuéntale a la comunidad...',
+              hintStyle:
+                  GoogleFonts.spaceGrotesk(color: Colors.white24, fontSize: 14),
               border: InputBorder.none,
               contentPadding: const EdgeInsets.all(16),
-              counterStyle: GoogleFonts.spaceGrotesk(color: Colors.white38, fontSize: 12),
+              counterStyle:
+                  GoogleFonts.spaceGrotesk(color: Colors.white38, fontSize: 12),
             ),
           ),
         ),
       ],
     );
   }
-}
+} 

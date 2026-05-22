@@ -80,13 +80,7 @@ class UsuarioData {
 // ════════════════════════════════════════════════════════════════
 // ASSETS DE AUDIO
 // ════════════════════════════════════════════════════════════════
-// Descarga MP3s de https://freemusicarchive.org (filtro: rock/metal,
-// licencia CC) y nómbralos exactamente como aparece aquí.
-// Ponlos en:  assets/audio/
-//
-// Con 3-4 tracks alcanza para repartir entre todos los álbumes.
-// Las canciones que tengan el mismo track_XX.mp3 son placeholder;
-// en la app se escucha el mismo audio pero con el nombre correcto.
+
 // ════════════════════════════════════════════════════════════════
 const _a1 = 'assets/audio/track_01.mp3'; // track de rock placeholder #1
 const _a2 = 'assets/audio/track_02.mp3'; // track de rock placeholder #2
@@ -111,9 +105,6 @@ const would = 'assets/audio/dirt_aic/would.mp3';
 
 // ════════════════════════════════════════════════════════════════
 // ASSETS DE IMÁGENES
-// ════════════════════════════════════════════════════════════════
-// Ponlas en: assets/images/
-// El widget ImagenAlbum en widgets.dart las carga con Image.asset.
 // ════════════════════════════════════════════════════════════════
 const _imgs = 'assets/images/';
 
@@ -224,7 +215,7 @@ final List<AlbumData> albumsQuemados = [
     genero: 'Hard Rock / Arena Rock',
     descripcion:
         'Hogar de los himnos deportivos más icónicos del planeta. We Will Rock You y We Are the Champions son inseparables de la cultura popular.',
-    imagenUrl: '${_imgs}queen_news_world.jpg',
+    imagenUrl: '${_imgs}queen_news_world.png',
     calificacionPromedio: 4.9,
     totalResenas: 6300,
     canciones: [
@@ -270,7 +261,7 @@ final List<AlbumData> albumsQuemados = [
     genero: 'Progressive Rock / Psychedelic',
     descripcion:
         'Uno de los álbumes más vendidos de la historia. Una obra conceptual sobre la condición humana: el tiempo, la codicia, la locura y la muerte.',
-    imagenUrl: '${_imgs}pf_dark_side.jpg',
+    imagenUrl: '${_imgs}pf_dark_side.png',
     calificacionPromedio: 5.0,
     totalResenas: 12400,
     canciones: [
@@ -320,7 +311,7 @@ final List<AlbumData> albumsQuemados = [
     genero: 'Progressive Rock',
     descripcion:
         'Un homenaje a Syd Barrett y una reflexión sobre la ausencia y la desconexión en la industria musical. Shine On You Crazy Diamond es una de las piezas más emotivas del rock.',
-    imagenUrl: '${_imgs}pf_wish_you_were_here.jpg',
+    imagenUrl: '${_imgs}pf_wish_you_were_here.png',
     calificacionPromedio: 4.9,
     totalResenas: 8100,
     canciones: [
@@ -332,81 +323,9 @@ final List<AlbumData> albumsQuemados = [
     ],
   ),
 
-  //  METALLICA (3 álbumes) 
-  const AlbumData(
-    id: 10,
-    nombre: 'Master of Puppets',
-    artista: 'Metallica',
-    ano: '1986',
-    genero: 'Thrash Metal / Heavy Metal',
-    descripcion:
-        'Considerado el mejor álbum de thrash metal de todos los tiempos. Una obra maestra de complejidad técnica y potencia bruta que definió el metal moderno.',
-    imagenUrl: '${_imgs}metallica_master.jpg',
-    calificacionPromedio: 5.0,
-    totalResenas: 11200,
-    canciones: [
-      CancionData(1, 'Battery', '5:12', _a1),
-      CancionData(2, 'Master of Puppets', '8:35', _a2),
-      CancionData(3, 'The Thing That Should Not Be', '6:36', _a3),
-      CancionData(4, 'Welcome Home (Sanitarium)', '6:27', _a4),
-      CancionData(5, 'Disposable Heroes', '8:17', _a5),
-      CancionData(6, 'Leper Messiah', '5:40', _a6),
-      CancionData(7, 'Orion', '8:27'),
-      CancionData(8, 'Damage, Inc.', '5:32'),
-    ],
-  ),
-
-  const AlbumData(
-    id: 11,
-    nombre: 'Ride the Lightning',
-    artista: 'Metallica',
-    ano: '1984',
-    genero: 'Thrash Metal',
-    descripcion:
-        'El segundo álbum de Metallica es donde la banda comenzó a expandir sus horizontes musicales, mezclando velocidad brutal con composiciones más elaboradas.',
-    imagenUrl: '${_imgs}metallica_ride.jpg',
-    calificacionPromedio: 4.9,
-    totalResenas: 7800,
-    canciones: [
-      CancionData(1, 'Fight Fire with Fire', '4:44', _a1),
-      CancionData(2, 'Ride the Lightning', '6:36', _a2),
-      CancionData(3, 'For Whom the Bell Tolls', '5:09', _a3),
-      CancionData(4, 'Fade to Black', '6:57', _a4),
-      CancionData(5, 'Trapped Under Ice', '4:03', _a5),
-      CancionData(6, 'Escape', '4:23', _a6),
-      CancionData(7, 'Creeping Death', '6:36'),
-      CancionData(8, 'The Call of Ktulu', '8:53'),
-    ],
-  ),
-
-  const AlbumData(
-    id: 12,
-    nombre: 'Metallica (The Black Album)',
-    artista: 'Metallica',
-    ano: '1991',
-    genero: 'Heavy Metal / Hard Rock',
-    descripcion:
-        'El álbum más vendido de metal en la historia. Metallica simplificó su sonido sin perder potencia, llegando a un público masivo con Enter Sandman y Nothing Else Matters.',
-    imagenUrl: '${_imgs}metallica_black.jpg',
-    calificacionPromedio: 4.8,
-    totalResenas: 13500,
-    canciones: [
-      CancionData(1, 'Enter Sandman', '5:31', _a1),
-      CancionData(2, 'Sad but True', '5:24', _a2),
-      CancionData(3, 'Holier Than Thou', '3:47', _a3),
-      CancionData(4, 'The Unforgiven', '6:27', _a4),
-      CancionData(5, 'Wherever I May Roam', '6:42', _a5),
-      CancionData(6, "Don't Tread on Me", '3:59', _a6),
-      CancionData(7, 'Through the Never', '4:04'),
-      CancionData(8, 'Nothing Else Matters', '6:28'),
-      CancionData(9, 'Of Wolf and Man', '4:16'),
-      CancionData(10, 'The God That Failed', '5:05'),
-    ],
-  ),
-
   //  BLACK SABBATH (3 álbumes) 
   const AlbumData(
-    id: 13,
+    id: 10,
     nombre: 'Paranoid',
     artista: 'Black Sabbath',
     ano: '1970',
@@ -429,7 +348,7 @@ final List<AlbumData> albumsQuemados = [
   ),
 
   const AlbumData(
-    id: 14,
+    id: 11,
     nombre: 'Black Sabbath',
     artista: 'Black Sabbath',
     ano: '1970',
@@ -451,7 +370,7 @@ final List<AlbumData> albumsQuemados = [
   ),
 
   const AlbumData(
-    id: 15,
+    id: 12,
     nombre: 'Heaven and Hell',
     artista: 'Black Sabbath',
     ano: '1980',
@@ -472,6 +391,78 @@ final List<AlbumData> albumsQuemados = [
       CancionData(8, 'Lonely Is the Word', '6:10'),
     ],
   ),
+
+  //  METALLICA (3 álbumes) 
+  const AlbumData(
+    id: 13,
+    nombre: 'Master of Puppets',
+    artista: 'Metallica',
+    ano: '1986',
+    genero: 'Thrash Metal / Heavy Metal',
+    descripcion:
+        'Considerado el mejor álbum de thrash metal de todos los tiempos. Una obra maestra de complejidad técnica y potencia bruta que definió el metal moderno.',
+    imagenUrl: '${_imgs}metallica_master.jpg',
+    calificacionPromedio: 5.0,
+    totalResenas: 11200,
+    canciones: [
+      CancionData(1, 'Battery', '5:12', _a1),
+      CancionData(2, 'Master of Puppets', '8:35', _a2),
+      CancionData(3, 'The Thing That Should Not Be', '6:36', _a3),
+      CancionData(4, 'Welcome Home (Sanitarium)', '6:27', _a4),
+      CancionData(5, 'Disposable Heroes', '8:17', _a5),
+      CancionData(6, 'Leper Messiah', '5:40', _a6),
+      CancionData(7, 'Orion', '8:27'),
+      CancionData(8, 'Damage, Inc.', '5:32'),
+    ],
+  ),
+
+  const AlbumData(
+    id: 14,
+    nombre: 'Ride the Lightning',
+    artista: 'Metallica',
+    ano: '1984',
+    genero: 'Thrash Metal',
+    descripcion:
+        'El segundo álbum de Metallica es donde la banda comenzó a expandir sus horizontes musicales, mezclando velocidad brutal con composiciones más elaboradas.',
+    imagenUrl: '${_imgs}metallica_ride.png',
+    calificacionPromedio: 4.9,
+    totalResenas: 7800,
+    canciones: [
+      CancionData(1, 'Fight Fire with Fire', '4:44', _a1),
+      CancionData(2, 'Ride the Lightning', '6:36', _a2),
+      CancionData(3, 'For Whom the Bell Tolls', '5:09', _a3),
+      CancionData(4, 'Fade to Black', '6:57', _a4),
+      CancionData(5, 'Trapped Under Ice', '4:03', _a5),
+      CancionData(6, 'Escape', '4:23', _a6),
+      CancionData(7, 'Creeping Death', '6:36'),
+      CancionData(8, 'The Call of Ktulu', '8:53'),
+    ],
+  ),
+
+  const AlbumData(
+    id: 15,
+    nombre: 'Metallica (The Black Album)',
+    artista: 'Metallica',
+    ano: '1991',
+    genero: 'Heavy Metal / Hard Rock',
+    descripcion:
+        'El álbum más vendido de metal en la historia. Metallica simplificó su sonido sin perder potencia, llegando a un público masivo con Enter Sandman y Nothing Else Matters.',
+    imagenUrl: '${_imgs}metallica_black.jpg',
+    calificacionPromedio: 4.8,
+    totalResenas: 13500,
+    canciones: [
+      CancionData(1, 'Enter Sandman', '5:31', _a1),
+      CancionData(2, 'Sad but True', '5:24', _a2),
+      CancionData(3, 'Holier Than Thou', '3:47', _a3),
+      CancionData(4, 'The Unforgiven', '6:27', _a4),
+      CancionData(5, 'Wherever I May Roam', '6:42', _a5),
+      CancionData(6, "Don't Tread on Me", '3:59', _a6),
+      CancionData(7, 'Through the Never', '4:04'),
+      CancionData(8, 'Nothing Else Matters', '6:28'),
+      CancionData(9, 'Of Wolf and Man', '4:16'),
+      CancionData(10, 'The God That Failed', '5:05'),
+    ],
+  ),
 ];
 
 // ════════════════════════════════════════════════════════════════
@@ -480,12 +471,12 @@ final List<AlbumData> albumsQuemados = [
 final List<ArtistaData> artistasQuemados = [
   ArtistaData(
     id: 1,
-    nombre: 'Queen',
+    nombre: 'Alice in Chains',
     albumes: [albumsQuemados[0], albumsQuemados[1], albumsQuemados[2]],
   ),
   ArtistaData(
     id: 2,
-    nombre: 'Alice in Chains',
+    nombre: 'Queen',
     albumes: [albumsQuemados[3], albumsQuemados[4], albumsQuemados[5]],
   ),
   ArtistaData(
@@ -495,13 +486,13 @@ final List<ArtistaData> artistasQuemados = [
   ),
   ArtistaData(
     id: 4,
-    nombre: 'Metallica',
-    albumes: [albumsQuemados[9], albumsQuemados[10], albumsQuemados[11]],
+    nombre: 'Black Sabbath',
+    albumes: [albumsQuemados[12], albumsQuemados[13], albumsQuemados[14]],
   ),
   ArtistaData(
     id: 5,
-    nombre: 'Black Sabbath',
-    albumes: [albumsQuemados[12], albumsQuemados[13], albumsQuemados[14]],
+    nombre: 'Metallica',
+    albumes: [albumsQuemados[9], albumsQuemados[10], albumsQuemados[11]],
   ),
 ];
 

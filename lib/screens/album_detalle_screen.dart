@@ -19,9 +19,9 @@ class _AlbumDetalleScreenState extends State<AlbumDetalleScreen> {
 
   //  Audio 
   final AudioPlayer _player = AudioPlayer();
-  int? _cancionActualIndex;       // índice de la canción cargada
-  bool _cargando = false;         // spinner mientras carga la URL
-  bool _reproduciendo = false;    // play/pause estado UI
+  int? _cancionActualIndex;
+  bool _cargando = false;
+  bool _reproduciendo = false;
   Duration _posicion = Duration.zero;
   Duration _duracion = Duration.zero;
 
@@ -29,17 +29,14 @@ class _AlbumDetalleScreenState extends State<AlbumDetalleScreen> {
   void initState() {
     super.initState();
 
-    // Escuchar cambios de posición
     _player.positionStream.listen((pos) {
       if (mounted) setState(() => _posicion = pos);
     });
 
-    // Escuchar duración total
     _player.durationStream.listen((dur) {
       if (mounted) setState(() => _duracion = dur ?? Duration.zero);
     });
 
-    // Escuchar estado play/pause/completed
     _player.playerStateStream.listen((state) {
       if (!mounted) return;
       final playing = state.playing;
@@ -60,16 +57,22 @@ class _AlbumDetalleScreenState extends State<AlbumDetalleScreen> {
     super.dispose();
   }
 
-  //  Toca una canción (o pausa si ya estaba sonando) 
+  // ── Quita el prefijo 'assets/' porque just_audio en web lo agrega solo ──
+  String _audioPath(String assetUrl) {
+    if (assetUrl.startsWith('assets/')) {
+      return assetUrl.substring('assets/'.length);
+    }
+    return assetUrl;
+  }
+
   Future<void> _toggleCancion(int index) async {
     final cancion = widget.album.canciones[index];
 
-    // Sin URL disponible → toast informativo
     if (cancion.audioUrl == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Preview no disponible para esta canción',
-            style: GoogleFonts.spaceGrotesk()),
+              style: GoogleFonts.spaceGrotesk()),
           backgroundColor: BeatTreatColors.surfaceVariant,
           behavior: SnackBarBehavior.floating,
           duration: const Duration(seconds: 2),
@@ -78,7 +81,6 @@ class _AlbumDetalleScreenState extends State<AlbumDetalleScreen> {
       return;
     }
 
-    // Pausa si es la misma canción y ya estaba sonando
     if (_cancionActualIndex == index) {
       if (_reproduciendo) {
         await _player.pause();
@@ -88,23 +90,30 @@ class _AlbumDetalleScreenState extends State<AlbumDetalleScreen> {
       return;
     }
 
-    // Nueva canción → cargar y reproducir
-    setState(() { _cargando = true; _cancionActualIndex = index; _posicion = Duration.zero; });
+    setState(() {
+      _cargando = true;
+      _cancionActualIndex = index;
+      _posicion = Duration.zero;
+    });
 
     try {
-      await _player.setAudioSource(AudioSource.asset(cancion.audioUrl!));
+      // Usamos _audioPath para evitar el doble prefijo assets/assets/
+      await _player.setAudioSource(
+        AudioSource.asset(_audioPath(cancion.audioUrl!)),
+      );
       await _player.play();
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Error al cargar el audio. Verifica que el archivo esté en assets/audio/',
-              style: GoogleFonts.spaceGrotesk()),
+            content: Text(
+                'Error al cargar el audio. Verifica que el archivo esté en assets/audio/',
+                style: GoogleFonts.spaceGrotesk()),
             backgroundColor: BeatTreatColors.error,
             behavior: SnackBarBehavior.floating,
           ),
         );
-        setState(() { _cancionActualIndex = null; });
+        setState(() => _cancionActualIndex = null);
       }
     } finally {
       if (mounted) setState(() => _cargando = false);
@@ -124,7 +133,6 @@ class _AlbumDetalleScreenState extends State<AlbumDetalleScreen> {
     return Scaffold(
       backgroundColor: BeatTreatColors.background,
 
-      //  Mini-player flotante (aparece cuando hay canción activa) 
       bottomNavigationBar: _cancionActualIndex != null
           ? _MiniPlayer(
               cancion: widget.album.canciones[_cancionActualIndex!],
@@ -136,15 +144,18 @@ class _AlbumDetalleScreenState extends State<AlbumDetalleScreen> {
               onPlayPause: () => _toggleCancion(_cancionActualIndex!),
               onClose: () async {
                 await _player.stop();
-                setState(() { _cancionActualIndex = null; _posicion = Duration.zero; });
+                setState(() {
+                  _cancionActualIndex = null;
+                  _posicion = Duration.zero;
+                });
               },
-              onSeek: (v) => _player.seek(Duration(seconds: (v * _duracion.inSeconds).round())),
+              onSeek: (v) =>
+                  _player.seek(Duration(seconds: (v * _duracion.inSeconds).round())),
             )
           : null,
 
       body: CustomScrollView(
         slivers: [
-          //  Portada con gradiente 
           SliverAppBar(
             expandedHeight: 340,
             pinned: true,
@@ -168,7 +179,8 @@ class _AlbumDetalleScreenState extends State<AlbumDetalleScreen> {
                 child: GestureDetector(
                   onTap: () => setState(() => _esFavorito = !_esFavorito),
                   child: Container(
-                    width: 38, height: 38,
+                    width: 38,
+                    height: 38,
                     decoration: BoxDecoration(
                       color: Colors.black.withOpacity(0.45),
                       shape: BoxShape.circle,
@@ -190,7 +202,8 @@ class _AlbumDetalleScreenState extends State<AlbumDetalleScreen> {
                   Container(
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
-                        begin: Alignment.topCenter, end: Alignment.bottomCenter,
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
                         colors: [
                           BeatTreatColors.purple60.withOpacity(0.3),
                           BeatTreatColors.background,
@@ -201,7 +214,8 @@ class _AlbumDetalleScreenState extends State<AlbumDetalleScreen> {
                   Center(
                     child: ImagenAlbum(
                       url: album.imagenUrl,
-                      width: 170, height: 170,
+                      width: 170,
+                      height: 170,
                       borderRadius: BorderRadius.circular(16),
                     ),
                   ),
@@ -216,24 +230,40 @@ class _AlbumDetalleScreenState extends State<AlbumDetalleScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(album.nombre, style: GoogleFonts.outfit(fontSize: 26, fontWeight: FontWeight.w800, color: Colors.white, height: 1.1)),
+                  Text(album.nombre,
+                      style: GoogleFonts.outfit(
+                          fontSize: 26,
+                          fontWeight: FontWeight.w800,
+                          color: Colors.white,
+                          height: 1.1)),
                   const SizedBox(height: 4),
-                  Text(album.artista, style: GoogleFonts.spaceGrotesk(fontSize: 16, fontWeight: FontWeight.w600, color: BeatTreatColors.purple60)),
+                  Text(album.artista,
+                      style: GoogleFonts.spaceGrotesk(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: BeatTreatColors.purple60)),
                   const SizedBox(height: 12),
-                  Wrap(spacing: 8, runSpacing: 6, children: [InfoChip(text: album.ano), InfoChip(text: album.genero)]),
+                  Wrap(
+                      spacing: 8,
+                      runSpacing: 6,
+                      children: [InfoChip(text: album.ano), InfoChip(text: album.genero)]),
                   const SizedBox(height: 16),
-                  Text(album.descripcion, style: GoogleFonts.spaceGrotesk(fontSize: 14, color: Colors.white70, height: 1.5)),
+                  Text(album.descripcion,
+                      style: GoogleFonts.spaceGrotesk(
+                          fontSize: 14, color: Colors.white70, height: 1.5)),
                   const SizedBox(height: 16),
                   _CalificacionCard(album: album),
                   const SizedBox(height: 16),
                   _BotonVerResenas(album: album),
                   const SizedBox(height: 12),
 
-                  //  Botón escribir resena 
                   GestureDetector(
-                    onTap: () => Navigator.push(context, MaterialPageRoute(
-                      builder: (_) => EscribirResenaScreen(albumPreseleccionado: album),
-                    )),
+                    onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) =>
+                              EscribirResenaScreen(albumPreseleccionado: album),
+                        )),
                     child: Container(
                       width: double.infinity,
                       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
@@ -245,40 +275,51 @@ class _AlbumDetalleScreenState extends State<AlbumDetalleScreen> {
                         children: [
                           const Icon(Icons.edit, color: BeatTreatColors.purple60, size: 20),
                           const SizedBox(width: 10),
-                          Text('Escribir resena', style: GoogleFonts.spaceGrotesk(fontSize: 15, fontWeight: FontWeight.w500, color: Colors.white)),
+                          Text('Escribir resena',
+                              style: GoogleFonts.spaceGrotesk(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.white)),
                         ],
                       ),
                     ),
                   ),
                   const SizedBox(height: 24),
 
-                  //  Canciones 
                   Row(
                     children: [
-                      Text('Canciones', style: GoogleFonts.outfit(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white)),
+                      Text('Canciones',
+                          style: GoogleFonts.outfit(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white)),
                       const Spacer(),
-                      // Leyenda
                       Row(children: [
-                        const Icon(Icons.play_circle_outline, color: BeatTreatColors.purple60, size: 14),
+                        const Icon(Icons.play_circle_outline,
+                            color: BeatTreatColors.purple60, size: 14),
                         const SizedBox(width: 4),
-                        Text('Toca para reproducir', style: GoogleFonts.spaceGrotesk(fontSize: 11, color: Colors.white38)),
+                        Text('Toca para reproducir',
+                            style: GoogleFonts.spaceGrotesk(
+                                fontSize: 11, color: Colors.white38)),
                       ]),
                     ],
                   ),
                   const SizedBox(height: 8),
 
                   ...album.canciones.asMap().entries.map((e) => _CancionItem(
-                    cancion: e.value,
-                    index: e.key,
-                    esUltima: e.key == album.canciones.length - 1,
-                    esActiva: _cancionActualIndex == e.key,
-                    reproduciendo: _reproduciendo && _cancionActualIndex == e.key,
-                    cargandoEsta: _cargando && _cancionActualIndex == e.key,
-                    onTap: () => _toggleCancion(e.key),
-                  )),
+                        cancion: e.value,
+                        index: e.key,
+                        esUltima: e.key == album.canciones.length - 1,
+                        esActiva: _cancionActualIndex == e.key,
+                        reproduciendo: _reproduciendo && _cancionActualIndex == e.key,
+                        cargandoEsta: _cargando && _cancionActualIndex == e.key,
+                        onTap: () => _toggleCancion(e.key),
+                      )),
 
                   const SizedBox(height: 24),
-                  Text('Resenas', style: GoogleFonts.outfit(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white)),
+                  Text('Resenas',
+                      style: GoogleFonts.outfit(
+                          fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white)),
                   const SizedBox(height: 8),
                   ...resenasQuemadas.map((r) => _ResenaItem(resena: r)),
                 ],
@@ -291,7 +332,6 @@ class _AlbumDetalleScreenState extends State<AlbumDetalleScreen> {
   }
 }
 
-//  Mini-player flotante 
 class _MiniPlayer extends StatelessWidget {
   final CancionData cancion;
   final AlbumData album;
@@ -340,56 +380,61 @@ class _MiniPlayer extends StatelessWidget {
           children: [
             Row(
               children: [
-                // Portada mini
                 ImagenAlbum(
                   url: album.imagenUrl,
-                  width: 42, height: 42,
+                  width: 42,
+                  height: 42,
                   borderRadius: BorderRadius.circular(8),
                 ),
                 const SizedBox(width: 12),
-
-                // Título + artista
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(cancion.titulo,
-                        style: GoogleFonts.spaceGrotesk(fontSize: 14, fontWeight: FontWeight.w600, color: Colors.white),
-                        maxLines: 1, overflow: TextOverflow.ellipsis),
+                          style: GoogleFonts.spaceGrotesk(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis),
                       Text(album.artista,
-                        style: GoogleFonts.spaceGrotesk(fontSize: 12, color: Colors.white38)),
+                          style: GoogleFonts.spaceGrotesk(
+                              fontSize: 12, color: Colors.white38)),
                     ],
                   ),
                 ),
-
-                // Play/Pause o spinner
                 if (cargando)
-                  const SizedBox(width: 38, height: 38,
-                    child: Padding(
-                      padding: EdgeInsets.all(8),
-                      child: CircularProgressIndicator(color: BeatTreatColors.purple60, strokeWidth: 2),
-                    ))
+                  const SizedBox(
+                      width: 38,
+                      height: 38,
+                      child: Padding(
+                        padding: EdgeInsets.all(8),
+                        child: CircularProgressIndicator(
+                            color: BeatTreatColors.purple60, strokeWidth: 2),
+                      ))
                 else
                   IconButton(
                     icon: Icon(
-                      reproduciendo ? Icons.pause_circle_filled : Icons.play_circle_filled,
-                      color: BeatTreatColors.purple60, size: 38,
+                      reproduciendo
+                          ? Icons.pause_circle_filled
+                          : Icons.play_circle_filled,
+                      color: BeatTreatColors.purple60,
+                      size: 38,
                     ),
                     onPressed: onPlayPause,
                   ),
-
-                // Cerrar
                 IconButton(
                   icon: const Icon(Icons.close, color: Colors.white38, size: 20),
                   onPressed: onClose,
                 ),
               ],
             ),
-
-            //  Barra de progreso 
             Row(
               children: [
-                Text(_fmt(posicion), style: GoogleFonts.spaceGrotesk(fontSize: 10, color: Colors.white38)),
+                Text(_fmt(posicion),
+                    style:
+                        GoogleFonts.spaceGrotesk(fontSize: 10, color: Colors.white38)),
                 Expanded(
                   child: Slider(
                     value: progress,
@@ -399,7 +444,9 @@ class _MiniPlayer extends StatelessWidget {
                     thumbColor: BeatTreatColors.purple60,
                   ),
                 ),
-                Text(_fmt(duracion), style: GoogleFonts.spaceGrotesk(fontSize: 10, color: Colors.white38)),
+                Text(_fmt(duracion),
+                    style:
+                        GoogleFonts.spaceGrotesk(fontSize: 10, color: Colors.white38)),
               ],
             ),
           ],
@@ -409,7 +456,6 @@ class _MiniPlayer extends StatelessWidget {
   }
 }
 
-//  Fila de canción con botón de play 
 class _CancionItem extends StatelessWidget {
   final CancionData cancion;
   final int index;
@@ -442,9 +488,9 @@ class _CancionItem extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 4),
             child: Row(
               children: [
-                // Número / ícono de estado
                 SizedBox(
-                  width: 36, height: 36,
+                  width: 36,
+                  height: 36,
                   child: Stack(
                     alignment: Alignment.center,
                     children: [
@@ -454,55 +500,62 @@ class _CancionItem extends StatelessWidget {
                             ? BeatTreatColors.purple60
                             : BeatTreatColors.surfaceVariant,
                         child: cargandoEsta
-                            ? const SizedBox(width: 14, height: 14,
-                                child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2))
+                            ? const SizedBox(
+                                width: 14,
+                                height: 14,
+                                child: CircularProgressIndicator(
+                                    color: Colors.white, strokeWidth: 2))
                             : esActiva
                                 ? Icon(
                                     reproduciendo ? Icons.pause : Icons.play_arrow,
-                                    color: Colors.white, size: 16)
+                                    color: Colors.white,
+                                    size: 16)
                                 : Text(cancion.numero.toString(),
-                                    style: GoogleFonts.spaceGrotesk(color: Colors.white70, fontSize: 12)),
+                                    style: GoogleFonts.spaceGrotesk(
+                                        color: Colors.white70, fontSize: 12)),
                       ),
-                      // Indicador de "sin preview" — bolita gris en esquina
                       if (!tieneAudio)
                         Positioned(
-                          right: 0, bottom: 0,
+                          right: 0,
+                          bottom: 0,
                           child: Container(
-                            width: 10, height: 10,
+                            width: 10,
+                            height: 10,
                             decoration: const BoxDecoration(
-                              color: Colors.white24, shape: BoxShape.circle),
-                            child: const Icon(Icons.music_off, size: 6, color: Colors.white54),
+                                color: Colors.white24, shape: BoxShape.circle),
+                            child: const Icon(Icons.music_off,
+                                size: 6, color: Colors.white54),
                           ),
                         ),
                     ],
                   ),
                 ),
                 const SizedBox(width: 14),
-
-                // Título
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(cancion.titulo,
-                        style: GoogleFonts.spaceGrotesk(
-                          color: esActiva ? BeatTreatColors.purple60 : Colors.white,
-                          fontSize: 15,
-                          fontWeight: esActiva ? FontWeight.w600 : FontWeight.normal,
-                        )),
+                          style: GoogleFonts.spaceGrotesk(
+                            color: esActiva ? BeatTreatColors.purple60 : Colors.white,
+                            fontSize: 15,
+                            fontWeight:
+                                esActiva ? FontWeight.w600 : FontWeight.normal,
+                          )),
                       if (!tieneAudio)
-                        Text('Sin preview', style: GoogleFonts.spaceGrotesk(fontSize: 11, color: Colors.white24)),
+                        Text('Sin preview',
+                            style: GoogleFonts.spaceGrotesk(
+                                fontSize: 11, color: Colors.white24)),
                     ],
                   ),
                 ),
-
-                // Duración
-                Text(cancion.duracion, style: GoogleFonts.spaceGrotesk(color: Colors.white38, fontSize: 13)),
+                Text(cancion.duracion,
+                    style:
+                        GoogleFonts.spaceGrotesk(color: Colors.white38, fontSize: 13)),
                 const SizedBox(width: 4),
-
-                // Ícono play visual (solo si tiene audio)
                 if (tieneAudio)
-                  Icon(Icons.play_circle_outline, color: Colors.white24, size: 18)
+                  const Icon(Icons.play_circle_outline,
+                      color: Colors.white24, size: 18)
                 else
                   const SizedBox(width: 18),
               ],
@@ -515,7 +568,6 @@ class _CancionItem extends StatelessWidget {
   }
 }
 
-//  Card de calificación 
 class _CalificacionCard extends StatelessWidget {
   final AlbumData album;
   const _CalificacionCard({required this.album});
@@ -524,16 +576,22 @@ class _CalificacionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-      decoration: BoxDecoration(color: BeatTreatColors.surfaceVariant, borderRadius: BorderRadius.circular(12)),
+      decoration: BoxDecoration(
+          color: BeatTreatColors.surfaceVariant,
+          borderRadius: BorderRadius.circular(12)),
       child: Row(
         children: [
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(album.calificacionPromedio.toString(),
-                style: GoogleFonts.outfit(fontSize: 36, fontWeight: FontWeight.w800, color: Colors.white)),
+                  style: GoogleFonts.outfit(
+                      fontSize: 36,
+                      fontWeight: FontWeight.w800,
+                      color: Colors.white)),
               Text('${album.totalResenas} resenas',
-                style: GoogleFonts.spaceGrotesk(fontSize: 12, color: Colors.white38)),
+                  style: GoogleFonts.spaceGrotesk(
+                      fontSize: 12, color: Colors.white38)),
             ],
           ),
           const Spacer(),
@@ -544,7 +602,6 @@ class _CalificacionCard extends StatelessWidget {
   }
 }
 
-//  Botón ver resenas 
 class _BotonVerResenas extends StatelessWidget {
   final AlbumData album;
   const _BotonVerResenas({required this.album});
@@ -554,7 +611,8 @@ class _BotonVerResenas extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
       decoration: BoxDecoration(
-        gradient: const LinearGradient(colors: [BeatTreatColors.purple60, Color(0xFF8B5CF6)]),
+        gradient: const LinearGradient(
+            colors: [BeatTreatColors.purple60, Color(0xFF8B5CF6)]),
         borderRadius: BorderRadius.circular(14),
       ),
       child: Row(
@@ -564,20 +622,31 @@ class _BotonVerResenas extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Ver todas las resenas', style: GoogleFonts.spaceGrotesk(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white)),
-              Text('${album.totalResenas} opiniones', style: GoogleFonts.spaceGrotesk(fontSize: 12, color: Colors.white70)),
+              Text('Ver todas las resenas',
+                  style: GoogleFonts.spaceGrotesk(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white)),
+              Text('${album.totalResenas} opiniones',
+                  style: GoogleFonts.spaceGrotesk(
+                      fontSize: 12, color: Colors.white70)),
             ],
           ),
           const Spacer(),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-            decoration: BoxDecoration(color: Colors.white.withOpacity(0.2), borderRadius: BorderRadius.circular(20)),
+            decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.2),
+                borderRadius: BorderRadius.circular(20)),
             child: Row(
               children: [
                 const Icon(Icons.star, color: BeatTreatColors.gold, size: 16),
                 const SizedBox(width: 4),
                 Text(album.calificacionPromedio.toString(),
-                  style: GoogleFonts.spaceGrotesk(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold)),
+                    style: GoogleFonts.spaceGrotesk(
+                        color: Colors.white,
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold)),
               ],
             ),
           ),
@@ -587,7 +656,6 @@ class _BotonVerResenas extends StatelessWidget {
   }
 }
 
-//  Item de resena 
 class _ResenaItem extends StatelessWidget {
   final ResenaData resena;
   const _ResenaItem({required this.resena});
@@ -597,37 +665,54 @@ class _ResenaItem extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.only(bottom: 10),
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(color: BeatTreatColors.surfaceVariant, borderRadius: BorderRadius.circular(12)),
+      decoration: BoxDecoration(
+          color: BeatTreatColors.surfaceVariant,
+          borderRadius: BorderRadius.circular(12)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
-              const CircleAvatar(radius: 16, backgroundColor: BeatTreatColors.surface,
-                child: Icon(Icons.account_circle, color: Colors.white60, size: 28)),
+              const CircleAvatar(
+                  radius: 16,
+                  backgroundColor: BeatTreatColors.surface,
+                  child:
+                      Icon(Icons.account_circle, color: Colors.white60, size: 28)),
               const SizedBox(width: 8),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(resena.autorNombre, style: GoogleFonts.spaceGrotesk(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.white)),
-                  Text(resena.autorUsuario, style: GoogleFonts.spaceGrotesk(fontSize: 11, color: Colors.white38)),
+                  Text(resena.autorNombre,
+                      style: GoogleFonts.spaceGrotesk(
+                          fontSize: 13,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white)),
+                  Text(resena.autorUsuario,
+                      style: GoogleFonts.spaceGrotesk(
+                          fontSize: 11, color: Colors.white38)),
                 ],
               ),
               const Spacer(),
-              Text(resena.fecha, style: GoogleFonts.spaceGrotesk(fontSize: 11, color: Colors.white38)),
+              Text(resena.fecha,
+                  style:
+                      GoogleFonts.spaceGrotesk(fontSize: 11, color: Colors.white38)),
             ],
           ),
           const SizedBox(height: 10),
           StarRating(rating: resena.calificacion),
           const SizedBox(height: 8),
-          Text(resena.texto, style: GoogleFonts.spaceGrotesk(fontSize: 13, color: Colors.white70, height: 1.4)),
+          Text(resena.texto,
+              style: GoogleFonts.spaceGrotesk(
+                  fontSize: 13, color: Colors.white70, height: 1.4)),
           const SizedBox(height: 8),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               const Icon(Icons.chat_bubble_outline, color: Colors.white38, size: 14),
               const SizedBox(width: 4),
-              Text('Ver comentarios', style: GoogleFonts.spaceGrotesk(fontSize: 11, color: Colors.white38)),
+              Text('Ver comentarios',
+                  style:
+                      GoogleFonts.spaceGrotesk(fontSize: 11, color: Colors.white38)),
             ],
           ),
         ],
