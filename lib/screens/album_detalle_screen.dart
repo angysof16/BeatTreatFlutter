@@ -57,7 +57,7 @@ class _AlbumDetalleScreenState extends State<AlbumDetalleScreen> {
     super.dispose();
   }
 
-  // ── Quita el prefijo 'assets/' porque just_audio en web lo agrega solo ──
+  //  Quita el prefijo 'assets/' porque just_audio en web lo agrega solo 
   String _audioPath(String assetUrl) {
     if (assetUrl.startsWith('assets/')) {
       return assetUrl.substring('assets/'.length);

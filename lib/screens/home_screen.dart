@@ -47,7 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-// ── Top Bar ────────────────────────────────────────────────────
+//  Top Bar 
 class _TopBarHome extends StatelessWidget {
   final VoidCallback onSearchTap;
   final VoidCallback onProfileTap;
@@ -67,7 +67,7 @@ class _TopBarHome extends StatelessWidget {
               ClipRRect(
                 borderRadius: BorderRadius.circular(10),
                 child: Image.asset(
-                  'images/beattreat.png',
+                  'assets/images/beattreat.png',
                   width: 38,
                   height: 38,
                   fit: BoxFit.cover,
@@ -85,8 +85,8 @@ class _TopBarHome extends StatelessWidget {
               ),
               const SizedBox(width: 10),
               Text('BeatTreat',
-                  style: GoogleFonts.outfit(
-                      fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white)),
+                  style: GoogleFonts.jaro(
+                      fontSize: 26, fontWeight: FontWeight.normal, color: Colors.white)),
               const Spacer(),
               IconButton(
                   icon: const Icon(Icons.search, color: Colors.white),
@@ -108,7 +108,7 @@ class _TopBarHome extends StatelessWidget {
   }
 }
 
-// ── Home Body ──────────────────────────────────────────────────
+//  Home Body 
 class _HomeBody extends StatelessWidget {
   final void Function(AlbumData) onAlbumTap;
   const _HomeBody({required this.onAlbumTap});
@@ -129,7 +129,7 @@ class _HomeBody extends StatelessWidget {
   }
 }
 
-// ── Banner ─────────────────────────────────────────────────────
+//  Banner 
 class _Banner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -196,7 +196,7 @@ class _Banner extends StatelessWidget {
   }
 }
 
-// ── Sección de artista ─────────────────────────────────────────
+//  Sección de artista 
 class _ArtistaSection extends StatelessWidget {
   final ArtistaData artista;
   final void Function(AlbumData) onAlbumTap;
@@ -241,7 +241,7 @@ class _ArtistaSection extends StatelessWidget {
   }
 }
 
-// ── Item álbum ─────────────────────────────────────────────────
+//  Item álbum 
 class _AlbumItem extends StatelessWidget {
   final AlbumData album;
   final VoidCallback onTap;

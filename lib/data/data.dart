@@ -30,7 +30,6 @@ class CancionData {
   final int numero;
   final String titulo;
   final String duracion;
-  // Ruta de asset de audio: 'assets/audio/track_01.mp3'
   // null = sin preview
   final String? audioUrl;
 
@@ -81,7 +80,6 @@ class UsuarioData {
 // ASSETS DE AUDIO
 // ════════════════════════════════════════════════════════════════
 
-// ════════════════════════════════════════════════════════════════
 const _a1 = 'assets/audio/track_01.mp3'; // track de rock placeholder #1
 const _a2 = 'assets/audio/track_02.mp3'; // track de rock placeholder #2
 const _a3 = 'assets/audio/track_03.mp3'; // track de rock placeholder #3
@@ -109,10 +107,10 @@ const would = 'assets/audio/dirt_aic/would.mp3';
 const _imgs = 'assets/images/';
 
 // ════════════════════════════════════════════════════════════════
-// ÁLBUMES
+// ABUMES
 // ════════════════════════════════════════════════════════════════
 final List<AlbumData> albumsQuemados = [
-  //  ALICE IN CHAINS (3 álbumes) 
+  //  ALICE IN CHAINS
   const AlbumData(
     id: 1,
     nombre: 'Dirt',
@@ -182,7 +180,7 @@ final List<AlbumData> albumsQuemados = [
       CancionData(7, 'Swing on This', '3:29'),
     ],
   ),
-  //  QUEEN (3 álbumes) 
+  //  QUEEN 
   const AlbumData(
     id: 4,
     nombre: 'A Night at the Opera',
@@ -252,7 +250,7 @@ final List<AlbumData> albumsQuemados = [
     ],
   ),
 
-  //  PINK FLOYD (3 álbumes) 
+  //  PINK FLOYD
   const AlbumData(
     id: 7,
     nombre: 'The Dark Side of the Moon',

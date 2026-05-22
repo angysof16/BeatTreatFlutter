@@ -209,7 +209,7 @@ class _AuthScreenState extends State<AuthScreen> with SingleTickerProviderStateM
   }
 }
 
-// ── Logo: imagen beattreat.png + texto ──────────────────────────
+//  logo 
 class _Logo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -219,7 +219,7 @@ class _Logo extends StatelessWidget {
         ClipRRect(
           borderRadius: BorderRadius.circular(14),
           child: Image.asset(
-            'images/beattreat.png',
+            'assets/images/beattreat.png',
             width: 56,
             height: 56,
             fit: BoxFit.cover,
@@ -240,7 +240,7 @@ class _Logo extends StatelessWidget {
         ),
         const SizedBox(width: 14),
         Text('BeatTreat',
-          style: GoogleFonts.outfit(fontSize: 30, fontWeight: FontWeight.bold, color: Colors.white)),
+          style: GoogleFonts.jaro(fontSize: 32, fontWeight: FontWeight.normal, color: Colors.white)),
       ],
     );
   }
