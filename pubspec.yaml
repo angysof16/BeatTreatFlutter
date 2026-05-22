@@ -1,0 +1,63 @@
+name: beattreat_flutter
+description: BeatTreat Flutter - Rock & Metal edition
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  google_fonts: ^6.1.0
+  cached_network_image: ^3.3.0
+  flutter_rating_bar: ^4.0.1
+  just_audio: ^0.9.40
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    #  Imágenes de portadas 
+    - assets/images/queen_night_opera.png
+    - assets/images/queen_news_world.png
+    - assets/images/queen_innuendo.png
+    - assets/images/aic_dirt.jpg
+    - assets/images/aic_facelift.jpg
+    - assets/images/aic_jar_of_flies.jpg
+    - assets/images/pf_dark_side.png
+    - assets/images/pf_the_wall.jpg
+    - assets/images/pf_wish_you_were_here.png
+    - assets/images/metallica_master.jpg
+    - assets/images/metallica_ride.png
+    - assets/images/metallica_black.jpg
+    - assets/images/sabbath_paranoid.jpg
+    - assets/images/sabbath_debut.jpg
+    - assets/images/sabbath_heaven_hell.jpg
+    - assets/images/placeholder_album.jpg
+
+    - assets/audio/track_01.mp3
+    - assets/audio/track_02.mp3
+    - assets/audio/track_03.mp3
+    - assets/audio/track_04.mp3
+    - assets/audio/track_05.mp3
+    - assets/audio/track_06.mp3
+
+    - assets/audio/dirt_aic/angry_chair.mp3
+    - assets/audio/dirt_aic/dam_that_river.mp3
+    - assets/audio/dirt_aic/dirt.mp3
+    - assets/audio/dirt_aic/down_in_a_hole.mp3
+    - assets/audio/dirt_aic/god_smack.mp3
+    - assets/audio/dirt_aic/hate_to_feel.mp3
+    - assets/audio/dirt_aic/junkhead.mp3
+    - assets/audio/dirt_aic/rooster.mp3
+    - assets/audio/dirt_aic/sickman.mp3
+    - assets/audio/dirt_aic/them_bones.mp3
+    - assets/audio/dirt_aic/untitled.mp3
+    - assets/audio/dirt_aic/would.mp3
+    - assets/audio/dirt_aic/rain_when_i_die.mp3
